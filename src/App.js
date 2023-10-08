@@ -1,5 +1,5 @@
 import { Component } from "react";
-
+import CardList from "./components/card-list/card-list.component";
 import "./App.css";
 
 
@@ -42,7 +42,6 @@ class App extends Component {
       );
     }
 
-
     return (
       <div className="App">
         <input
@@ -53,11 +52,7 @@ class App extends Component {
         />
         {filteredUsers.map((user) => {
           return (
-            <div key={user.uid}>
-              <span>
-                {user.first_name} {user.last_name}
-              </span>
-            </div>
+            <CardList user={user} />
           );
         })
         }

@@ -6,28 +6,42 @@ import "./App.css";
 
 class App extends Component {
   constructor() {
-    console.log("constructor");
     super();
 
     this.state = {
       users: [],
-      filteredUsers: [],
+      searchString: [],
     };
   }
 
   async componentDidMount() {
-    console.log("componentDidMount");
     if (this.state.users.length === 0) {
       const response = await fetch(
         "https://random-data-api.com/api/v2/users?size=33&is_json=true"
       );
       const users = await response.json();
-      this.setState({ users, filteredUsers: users }, () => console.log("inputval: ", this.state));
+      this.setState({ users, filteredUsers: users });
     }
   }
 
   render() {
-    console.log("render");
+    const { users, searchString } = this.state;
+
+    const filteredUsers = users.filter(user => {
+      const fullName = `${user.first_name}${user.last_name}`.toLocaleLowerCase();
+      return fullName.includes(searchString);
+    });
+
+    const onSearchChange = (event) => {
+      console.log("event: ", event.target.value);
+      const searchString = event.target.value.toLocaleLowerCase();
+      this.setState(
+        () => {
+          return { searchString };
+        }
+      );
+    }
+
 
     return (
       <div className="App">
@@ -35,32 +49,15 @@ class App extends Component {
           className="search-box"
           type="search"
           placeholder="search users"
-          onChange={(event) => {
-            console.log("event: ", event.target.value);
-            const searchString = event.target.value.toLocaleLowerCase();
-            const filteredUsers = this.state.users.filter(user => user.first_name.toLocaleLowerCase().includes(searchString) || user.last_name.toLocaleLowerCase().includes(searchString));
-            this.setState(
-              () => {
-                return { filteredUsers: filteredUsers };
-              },
-              () => {
-                console.log("render => ", this.state);
-              }
-            );
-          }
-          }
+          onChange={onSearchChange}
         />
-        {this.state.filteredUsers.map((user) => {
+        {filteredUsers.map((user) => {
           return (
             <div key={user.uid}>
               <span>
                 {user.first_name} {user.last_name}
               </span>
-              <span>
-                &nbsp;
-              </span>
             </div>
-
           );
         })
         }

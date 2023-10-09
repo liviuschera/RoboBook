@@ -3,12 +3,15 @@ import { Component } from "react";
 class CardList extends Component {
 
     render() {
-        const { user } = this.props;
+        const { users } = this.props;
+
         return (
-            <div key={user.uid}>
-                <span>
+            <div >
+                {users.map(user =>
+                (<h1 key={user.uid}>
                     {user.first_name} {user.last_name}
-                </span>
+                </h1>)
+                )}
             </div>);
     }
 }

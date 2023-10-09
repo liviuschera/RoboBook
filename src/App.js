@@ -1,5 +1,6 @@
 import { Component } from "react";
 import CardList from "./components/card-list/card-list.component";
+import SearchBox from "./components/search-box/search-box.component";
 import "./App.css";
 
 
@@ -20,9 +21,18 @@ class App extends Component {
         "https://random-data-api.com/api/v2/users?size=33&is_json=true"
       );
       const users = await response.json();
-      this.setState({ users, filteredUsers: users });
+      this.setState({ users });
     }
   }
+  onSearchChange = (event) => {
+    console.log("event: ", event.target.value);
+    const searchString = event.target.value.toLocaleLowerCase();
+    this.setState(
+      () => {
+        return { searchString };
+      }
+    );
+  };
 
   render() {
     const { users, searchString } = this.state;
@@ -32,30 +42,17 @@ class App extends Component {
       return fullName.includes(searchString);
     });
 
-    const onSearchChange = (event) => {
-      console.log("event: ", event.target.value);
-      const searchString = event.target.value.toLocaleLowerCase();
-      this.setState(
-        () => {
-          return { searchString };
-        }
-      );
-    }
 
     return (
       <div className="App">
-        <input
-          className="search-box"
-          type="search"
-          placeholder="search users"
-          onChange={onSearchChange}
-        />
-        {filteredUsers.map((user) => {
-          return (
-            <CardList user={user} />
-          );
-        })
-        }
+        {this.state.users.length ?
+          (
+            <>
+              <SearchBox className="search-box" onChangeHandler={this.onSearchChange} placeholder="Search for users" />
+              <CardList users={filteredUsers} />
+            </>
+          )
+          : "Loading data..."}
 
       </div>
     );

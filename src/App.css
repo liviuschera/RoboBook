@@ -1,6 +1,14 @@
-.App {
+body {
   background: #606c88;
   background: -webkit-linear-gradient(106deg, #606c88 0%, #3f4c6b 100%);
   background: linear-gradient(106deg, #606c88 0%, #3f4c6b 100%);
   text-align: center;
+}
+
+.app-name {
+  color: #262f5f;
+  font-size: 40px;
+  font-weight: 700;
+  padding-top: 70px;
+  padding-bottom: 50px;
 }

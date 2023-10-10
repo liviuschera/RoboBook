@@ -45,6 +45,7 @@ class App extends Component {
 
     return (
       <div className="App">
+        <h1 className="app-name">RoboBook</h1>
         {this.state.robots.length ?
           (
             <>

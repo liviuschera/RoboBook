@@ -10,8 +10,6 @@ class CardList extends Component {
         return (
             <div className="card-list">
                 {robots.map(robot => {
-
-
                     return <Card robot={robot} />;
                 })}
             </div>);

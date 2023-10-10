@@ -10,18 +10,18 @@ class App extends Component {
     super();
 
     this.state = {
-      users: [],
+      robots: [],
       searchString: [],
     };
   }
 
   async componentDidMount() {
-    if (this.state.users.length === 0) {
+    if (this.state.robots.length === 0) {
       const response = await fetch(
         "https://random-data-api.com/api/v2/users?size=33&is_json=true"
       );
-      const users = await response.json();
-      this.setState({ users });
+      const robots = await response.json();
+      this.setState({ robots });
     }
   }
   onSearchChange = (event) => {
@@ -35,21 +35,21 @@ class App extends Component {
   };
 
   render() {
-    const { users, searchString } = this.state;
+    const { robots, searchString } = this.state;
 
-    const filteredUsers = users.filter(user => {
-      const fullName = `${user.first_name}${user.last_name}`.toLocaleLowerCase();
+    const filteredRobots = robots.filter(robot => {
+      const fullName = `${robot.first_name}${robot.last_name}`.toLocaleLowerCase();
       return fullName.includes(searchString);
     });
 
 
     return (
       <div className="App">
-        {this.state.users.length ?
+        {this.state.robots.length ?
           (
             <>
-              <SearchBox className="search-box" onChangeHandler={this.onSearchChange} placeholder="Search for users" />
-              <CardList users={filteredUsers} />
+              <SearchBox className="search-box" onChangeHandler={this.onSearchChange} placeholder="Search for robots" />
+              <CardList robots={filteredRobots} />
             </>
           )
           : "Loading data..."}

@@ -1,23 +1,38 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import CardList from "./components/card-list/card-list.component";
 import SearchBox from "./components/search-box/search-box.component";
 import "./App.css";
+import { getData } from "./utils/data.utils";
+
+export type Robot = {
+  uid: string;
+  first_name: string;
+  last_name: string;
+  avatar: string;
+  employment: {
+    title: string;
+    key_skill: string;
+  };
+  address: {
+    city: string;
+    state: string;
+  };
+};
 
 const App = () => {
-  const [robots, setRobots] = useState([]);
+  const [robots, setRobots] = useState<Robot[]>([]);
   const [searchString, setSearchString] = useState("");
-  const [filteredRobots, setFilteredRobots] = useState([]);
+  const [filteredRobots, setFilteredRobots] = useState(robots);
 
   useEffect(() => {
-    async function fetchData() {
-      const response = await fetch(
+    const fetchRobots = async () => {
+      const robots = await getData<Robot[]>(
         "https://random-data-api.com/api/v2/users?size=33&is_json=true"
       );
-      const robots = await response.json();
       setRobots(robots);
-    }
+    };
 
-    fetchData();
+    fetchRobots();
   }, []);
 
   useEffect(() => {
@@ -29,7 +44,7 @@ const App = () => {
     setFilteredRobots(filterRobots);
   }, [robots, searchString]);
 
-  const onSearchChange = (event) => {
+  const onSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
     console.log("event: ", event.target.value);
     const searchString = event.target.value.toLocaleLowerCase();
     setSearchString(searchString);
